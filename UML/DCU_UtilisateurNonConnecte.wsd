@@ -1,0 +1,12 @@
+@startuml
+
+actor Utilisateur_Non_Connecté
+
+Utilisateur_Non_Connecté -left- (Créer un compte)
+Utilisateur_Non_Connecté -right- (Se connecter)
+Utilisateur_Non_Connecté -down- (//Effectuer une recherche//)
+
+(Effectuer une recherche rapide) -up-|> (//Effectuer une recherche//) 
+(Effectuer une recherche avancée) -up-|> (//Effectuer une recherche//) 
+
+@enduml

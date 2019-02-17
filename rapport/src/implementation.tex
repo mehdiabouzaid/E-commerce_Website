@@ -1,0 +1,62 @@
+\subsection{Implémentation}
+
+Pour l'implémentation du site web, nous avons utilisé le framework Apache Struts. Il permet d'adopter plus facilement l'architecture Modèle-Vue-Contrôleur et comme nous l'avions déjà utilisé en cours, nous n'avons pas perdu de temps à apprendre les fonctionnalités.\\
+
+Pour la gestion de la base de données, nous avons utilisé le système PostgreSQL. \\
+
+Nous utilisons également l'architecture AJAX pour nos passages de paramètres sans formulaires, nous permettant d'effectuer des tâches asynchrones. Le format de données envoyées par les requêtes est le JSON. \\
+
+Nous avons développé les points suivants :\\
+\begin{itemize}
+	\item Création d'un compte 
+	\item Gestion d'un compte avec la modification du mot de passe
+	\item Type de connexion 
+	\item Gestion des sessions
+	\item Recherche rapide ou avancée d'un objet
+	\item Consultation d'un objet
+	\item Consultation de profils utilisateurs
+	\item Recherche et recherche avancée
+	\item Mise en vente
+	\item Gestion des annonces par administrateur
+	\item Gestion des administrateurs
+	\item Panier 
+	\item Paiement via Paypal 
+	\item Messagerie
+\end{itemize}
+
+Nous n'avions pas eu le temps de développer ces fonctionnalités : \\
+
+\begin{itemize}
+	\item Vote
+	\item Gestion par l'utilisateur de ses articles déjà postés
+\end{itemize}
+
+\subsection{Tests}
+
+Pour les tests, nous les avons fait manuellement sur le site web et enregistré ceux-ci dans une vidéo de démonstration :
+\begin{itemize}
+\item Tentative de connexion avec Pierre $\rightarrow$ pas de compte
+\item Création du compte Pierre
+\item Valider sans aucun champ $\rightarrow$ erreur 
+\item Nouvelle tentative de création du compte Pierre $\rightarrow$ utilisateur déjà pris
+\item Connexion avec le compte Pierre $\rightarrow$ mauvais mot de passe 
+\item Connexion avec le bon mot de passe
+\item Page votre compte
+\item Recherche d’annonces (prix, description, catégorie, lieu)
+\item Connexion avec le compte Flavien (déjà existant et admin)
+\item Passer Pierre en admin
+\item Déposer annonce
+\item valider sans aucun champ $\rightarrow$ erreur
+\item rechercher l'annonce déposée
+\item Connexion du compte de Pierre (maintenant admin)
+\item Valider l'annonce de Flavien
+\item Rechercher l'annonce de Flavien 
+\item Contacter Flavien (2messages)
+\item Changer mot de passe de Pierre
+\item Connexion compte Flavien $\rightarrow$ réponse
+\item Connexion compte Pierre avec le nouveau mot de passe $\rightarrow$ réponse
+\item Ajouter article Flavien  + un autre déjà présent
+\item Paiement
+\item Recherche des articles achetés $\rightarrow$ plus disponibles
+\item Déconnexion
+\end{itemize}

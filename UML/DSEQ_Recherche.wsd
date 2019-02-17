@@ -1,0 +1,67 @@
+@startuml
+
+title Recherche d'objet
+actor Utilisateur #red
+boundary PageRecherche
+boundary RechercheAvancée
+boundary RésultatRecherche
+boundary RechercheRapide
+control ContrôleRecherche
+entity Catalogue_Objet
+database BD
+
+Utilisateur -> PageRecherche: SelectionnerModeRecherche(mode)
+activate Utilisateur
+activate PageRecherche
+PageRecherche --> Utilisateur: EnvoyerFormulaireRecherche(mode)
+deactivate PageRecherche
+
+alt mode = Avancé
+    Utilisateur -> RechercheAvancée: chercher(type,lieu,prix)
+    activate RechercheAvancée
+    activate ContrôleRecherche
+    RechercheAvancée -> ContrôleRecherche: chercherObjetAvancé(type,lieu,prix)
+    deactivate RechercheAvancée
+else mode = Rapide
+    Utilisateur -> RechercheRapide: chercher(phrase)
+    activate RechercheRapide
+    RechercheRapide -> ContrôleRecherche: chercherObjetRapide(phrase)
+    deactivate RechercheRapide  
+end
+
+ContrôleRecherche -> Catalogue_Objet: chercherObjet(tabParam)
+activate Catalogue_Objet
+Catalogue_Objet -> BD: find(tabParam)
+
+activate BD
+BD --> Catalogue_Objet: résultats
+deactivate BD
+
+Catalogue_Objet --> ContrôleRecherche: resultatRecherche(résultats)
+deactivate Catalogue_Objet
+
+ContrôleRecherche -> PageRecherche: create(résultats)
+deactivate ContrôleRecherche
+activate PageRecherche
+
+
+alt resultats = null 
+     PageRecherche --> Utilisateur: Message d'erreur
+else resultats != null
+    PageRecherche --> Utilisateur: Afficher les résulats
+    deactivate PageRecherche
+    deactivate Utilisateur
+    Utilisateur -> PageRecherche: pageSuivante()
+    activate Utilisateur
+    activate PageRecherche
+    deactivate PageRecherche
+    deactivate Utilisateur
+
+    Utilisateur -> PageRecherche: pagePrécédente()
+    activate Utilisateur
+    activate PageRecherche
+    deactivate PageRecherche
+    deactivate Utilisateur
+end
+
+@enduml

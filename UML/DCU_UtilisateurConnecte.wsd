@@ -1,0 +1,24 @@
+@startuml
+
+actor Utilisateur_Connecté
+
+Utilisateur_Connecté -right- (Effectuer une demande dans la chatbox)
+Utilisateur_Connecté -down- (Consulter ses commandes en cours)
+Utilisateur_Connecté -left- (Effectuer une commande)
+Utilisateur_Connecté -right- (Gérer son panier)
+Utilisateur_Connecté -down- (//Effectuer une recherche//)
+Utilisateur_Connecté -up- (Evaluer la transaction)
+Utilisateur_Connecté -up- (Gérer les paramètres de son compte)
+Utilisateur_Connecté -left- (Mettre en vente un objet)
+
+(Effectuer une recherche rapide) -up-|> (//Effectuer une recherche//) 
+(Effectuer une recherche avancée) -up-|> (//Effectuer une recherche//) 
+
+(Effectuer une commande) -.> (Gérer son panier) : extend
+(Gérer son panier) .> (//Effectuer une recherche//) : extend
+(Consulter ses commandes en cours) -.> (Effectuer une commande) : extend
+
+(Gérer son panier) -.> (Régler un paiement) : extend
+(Mettre en vente un objet) -.> (Modifier l'annonce) : extend
+
+@enduml

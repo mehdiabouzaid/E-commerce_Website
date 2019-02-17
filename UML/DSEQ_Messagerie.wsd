@@ -1,0 +1,37 @@
+@startuml
+title Messagerie
+actor Utilisateur
+
+boundary Messagerie
+control ServeurWeb
+actor Moderateur
+
+database BD
+
+Utilisateur -> Messagerie : envoyerMessage(msg,dest)
+activate Messagerie
+
+Messagerie -> ServeurWeb : infosMessage(msg, dest)
+activate ServeurWeb
+
+ServeurWeb -> Moderateur : messageValide(msg)
+activate Moderateur
+
+alt messageValide(msg) = true
+
+activate BD
+Moderateur -> BD : enregistrerMessage(msg,dest)
+deactivate BD
+ServeurWeb -> Messagerie : envoyerMessage(msg,dest)
+else messageValide(msg) = false
+Moderateur  -> Utilisateur : erreurMessageValide()
+end
+deactivate Moderateur
+deactivate ServeurWeb
+
+
+activate Messagerie
+Messagerie -> Utilisateur : redirection()
+
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+actor Utilisateur
+boundary PageConnexion
+control ServeurWeb
+database BD
+
+Utilisateur -> PageConnexion : saisir(id,mdp,email)
+activate PageConnexion
+
+PageConnexion -> ServeurWeb : utilisateurExiste(id,mdp,email)
+activate ServeurWeb
+
+ServeurWeb -> BD : idExiste(id)
+activate BD
+
+BD --> ServeurWeb : compteExiste()
+deactivate BD
+alt compteExiste() = false
+ServeurWeb -> BD : creerCompte(id,mdp,email)
+activate BD
+BD --> ServeurWeb : compteExistant()
+deactivate BD
+
+ServeurWeb --> PageConnexion : compteCree()
+
+
+PageConnexion -> Utilisateur : redirection()
+else compteExiste() = true
+ServeurWeb -> PageConnexion : compteExistant()
+deactivate ServeurWeb
+PageConnexion -> Utilisateur : erreurCompteExistant()
+deactivate PageConnexion
+end
+
+
+
+
+@enduml

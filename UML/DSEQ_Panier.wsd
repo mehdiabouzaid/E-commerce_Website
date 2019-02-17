@@ -1,0 +1,38 @@
+@startuml
+actor Utilisateur
+boundary PagePanier
+control ServeurWeb
+database BD
+
+Utilisateur -> PagePanier : modifierPanier(article,quantite)
+
+activate PagePanier
+alt quantite > 0
+    PagePanier -> ServeurWeb : ajouterArticle(article,quantite)    
+else 
+    PagePanier -> ServeurWeb : supprimerArticle(article,quantite)
+end
+activate ServeurWeb
+ServeurWeb -> ServeurWeb : recalculerPanier(listeArticles)
+ServeurWeb -> BD : mettreAJourPanier(listeArticles)
+activate BD
+deactivate BD
+
+ServeurWeb --> PagePanier : rechargerPage()
+deactivate ServeurWeb
+
+PagePanier -> Utilisateur : rafraichissement()
+deactivate PagePanier
+
+Utilisateur -> ServeurWeb : commanderPanier(listeArticles)
+activate ServeurWeb
+
+ServeurWeb -> BD : supprimerPanier(ListeArticles)
+
+activate BD
+deactivate BD
+
+ServeurWeb -> Utilisateur : redirection()
+deactivate ServeurWeb
+
+@enduml

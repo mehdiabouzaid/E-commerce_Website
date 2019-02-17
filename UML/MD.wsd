@@ -1,0 +1,38 @@
+@startuml
+
+
+class Catégorie {
+}
+class Produit {
+}
+class Annonce {
+}
+class Vendeur {
+}
+class Note {
+}
+class Panier {
+}
+class Commande {  
+}
+class Client {
+}
+class Adresse { 
+}
+class MoyenPaiement {
+}
+hide members
+
+Catégorie "1" *-- "*" Produit
+Produit "1" *-- "*" Annonce
+Vendeur "1" -- "*" Annonce
+Vendeur "1" *-- "*" Note
+Panier "1" -- "*" Annonce
+Panier "1" -- "0..1" Commande
+Commande "*" --up "1" Client
+Client "1" *-- "1..2" Adresse
+Client "1" *-- "1..*" MoyenPaiement
+Adresse "1" -- "*" Commande
+
+
+@enduml

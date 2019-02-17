@@ -1,0 +1,36 @@
+@startuml
+title Paiement
+actor Utilisateur
+boundary PagePaiement
+control ServeurWeb
+database Banque
+
+Utilisateur -> PagePaiement : payer(nom,numero,date,crypto)
+activate PagePaiement
+
+PagePaiement -> ServeurWeb : infosCarte(nom,numero,date,crypto)
+activate ServeurWeb
+
+ServeurWeb -> Banque : carteValide(nom,numero,date,crypto)
+activate Banque
+
+Banque --> ServeurWeb : carteValide()
+
+alt carteValide() = true
+
+
+ServeurWeb -> Banque : debiterCompte(nom,numero,date,crypto)
+Banque -> ServeurWeb : supprimer(crypto)
+deactivate Banque
+ServeurWeb -> PagePaiement : recapCommande()
+PagePaiement -> Utilisateur : redirection()
+
+else carteValide() = false
+ServeurWeb -> PagePaiement : erreurCarteValide()
+deactivate ServeurWeb
+PagePaiement -> Utilisateur : messageErreur()
+deactivate PagePaiement
+end
+
+
+@enduml

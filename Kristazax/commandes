@@ -1,0 +1,8 @@
+cd bd_init
+psql -h localhost -U banane kristazax (mdp = jaune)
+\i creationTable.sql
+\i creationTrigger.sql
+\i remplirTable.sql
+cd ..
+ant
+cp dist/Kristazax.war /tmp/wildfly-15.0.0.Final/standalone/deployments/

@@ -1,0 +1,89 @@
+@startuml
+
+Compte : identifiant : string
+Compte : mot de passe : string
+Compte : email : string
+Compte : rôle : string
+Compte : estIdentifie : booleen
+
+
+Article : identifiant : integer
+Article : nom : string
+Article : description : string
+Article : prix : float
+
+Recherche : type : string
+Recherche : lieu : string
+Recherche : prix : float
+
+GestionCompte : compte : compte
+
+MiseEnVente : article : article
+MiseEnVente : compte : compte
+
+Utilisateur "1" --> "0..1" Compte 
+Utilisateur  --  Affichage
+Utilisateur "1" --> "1" Panier
+
+Panier "1" *-- "*" Article
+
+Affichage --  ConsultationCatalogue
+ConsultationCatalogue "1..*" *-- Article
+Affichage -- Recherche
+Affichage -- GestionCompte
+Affichage -- MiseEnVente
+Affichage -- CreationCompte
+Affichage -- Messagerie
+
+class Messagerie{
+    void envoyerMessage(msg, dest)
+    booleen erreurMessageValide()
+    void redirection()
+}
+
+class Recherche{
+    void selectionnerModeRecherche(mode)
+    Formulaire envoyerFormulaireRecherche(mode)
+    Article chercher(phrase)
+}
+
+class RechercheAvancee{
+    Article chercher(type,lieu,prix)
+}
+
+class Panier{
+    boolean ajouterArticle(idArticle)
+    boolean supprimerArticle(idArticle)
+}
+
+class GestionCompte{
+    void editerCompte(id,mdp)
+    void redirection()
+}
+
+class MiseEnVente{
+    Article donnerInfosArticle(idArt)
+    void afficheArticle(idArt)
+    void afficherMessageErreur()
+}
+
+class CreationCompte{
+    booleen saisir(id,mdp)
+    void redirection()
+    booleen erreurCompteExistant()
+}
+
+class ConsultationCatalogue{
+    Article consulterArticle(idArt)
+    void afficheArticle(idArt)
+    void afficherMessageErreur()
+}
+
+class Affichage{
+    void afficherPage()
+    ? ()
+}
+
+RechercheAvancee -up-|> Recherche
+
+@enduml

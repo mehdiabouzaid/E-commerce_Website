@@ -1,0 +1,25 @@
+@startuml
+actor Utilisateur
+boundary PageObjet
+control ServeurWeb
+database BD
+
+Utilisateur -> PageObjet : vote(id)
+activate PageObjet
+
+PageObjet -> ServeurWeb : ajouterVote(id, note)
+activate ServeurWeb
+
+ServeurWeb -> ServeurWeb : calculerNouvelleNote(id, note)
+
+ServeurWeb -> BD : mettreAJourNote(id, note)
+activate BD
+deactivate BD
+
+ServeurWeb --> PageObjet : rechargerPage()
+deactivate ServeurWeb
+
+PageObjet -> Utilisateur : rafraichissement()
+deactivate PageObjet
+
+@enduml

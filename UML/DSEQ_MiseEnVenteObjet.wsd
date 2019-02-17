@@ -1,0 +1,30 @@
+@startuml Mise en vente d'Article
+actor Utilisateur
+boundary PageConsultation
+control ServeurWeb
+database BD
+
+Utilisateur -> PageConsultation : donnerInfosArticle(infosArt)
+activate PageConsultation
+
+PageConsultation -> ServeurWeb : creerArticle(infosArt)
+activate ServeurWeb
+
+ServeurWeb -> BD : creerArticle(infosArt)
+activate BD
+
+BD --> ServeurWeb : articleCree()
+deactivate BD
+
+alt booleen = true
+ServeurWeb -> PageConsultation : retourneArticle()
+PageConsultation -> Utilisateur : afficheArticle()
+
+else booleen = false
+ServeurWeb -> PageConsultation : erreurCreationArticle()
+PageConsultation -> Utilisateur : afficherMessageErreur()
+deactivate ServeurWeb
+deactivate PageConsultation
+end
+
+@enduml

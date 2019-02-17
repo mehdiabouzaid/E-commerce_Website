@@ -1,0 +1,12 @@
+@startuml
+
+actor Administrateur
+
+Administrateur -right- (Répondre aux utilisateurs de la chatbox)
+Administrateur -down- (Valider les annonces des utilisateurs)
+Administrateur -up- (Gérer les comptes des utilisateurs)
+
+
+(Valider les annonces des utilisateurs) -.> (Consulter les annonces des utilisateurs) : extend
+
+@enduml

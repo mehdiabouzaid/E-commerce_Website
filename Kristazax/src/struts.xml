@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.ui.theme" value="simple" />
+
+	<package name="basicstruts2" extends="struts-default ssl-default">
+		<interceptors>
+			<interceptor-stack name="secureStack">
+				<interceptor-ref name="secure">
+					<param name="useAnnotations">false</param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+
+		<action name="index">
+			<result>/index.jsp</result>
+		</action>
+		
+		<action name="creationcompte" class="register.action.CreationCompte" method="register">
+			<result name="success">index.jsp</result>
+			<result name="input">creationCompte.jsp</result>
+		</action>
+
+		<action name="erreurcreationcompte" class="register.action.CreationCompte" method="register">
+			<result name="input">/creationCompte.jsp</result>
+		</action>
+
+		<action name="connexion" class="register.action.VerifierCompteExiste" method="execute">
+			<result name="success" type="redirectAction">
+				<param name="actionName">index</param>
+				<param name="connexionReussie">Connexion réussie</param>
+			</result>
+			<result name="input">/pageConnexion.jsp</result>
+		</action>
+
+		<action name="changerMdp" class="register.action.ModificationMdp" method="execute">
+			<result name="success" type="redirectAction">
+				<param name="actionName">index</param>
+				<param name="mdpchanger">Modification du mot de passe effectuée</param>
+			</result>
+			<result name="input">/pageChangerMdp.jsp</result>
+		</action>
+
+		<action name="deconnexion" class="register.action.VerifierCompteExiste" method="deconnexion">
+			<interceptor-ref name="defaultStack">
+				<param name="validation.excludeMethods">deconnexion</param>
+			</interceptor-ref>
+			<result name="success" type="redirectAction">
+				<param name="actionName">index</param>
+				<param name="deconnexionReussie">Deconnexion réussie</param>
+			</result>
+		</action>
+
+		<action name="miseenvente" class="register.action.MiseEnVente" method="execute">
+			<result name="success">index.jsp</result>
+			<result name="input">miseEnVente.jsp</result>
+		</action>
+
+		<action name="obtenirlistearticles" class="register.action.ObtenirListeArticles">
+			<result name="success">/listeArticles.jsp</result>
+		</action>
+
+		<action name="obtenirlistecomptes" class="register.action.Administration">
+			<result name="success">/Administration.jsp</result>
+		</action>
+
+		<action name="passeradmin" class="register.action.Administration">
+			<result name="success">/Administration.jsp</result>
+		</action>
+
+		<action name="gestionannonces" class="register.action.AdministrationAnnonces">
+			<result name="success">/administrationAnnonces.jsp</result>
+		</action>
+
+		<action name="gestionMessages" class="register.action.Messagerie">
+			<result name="success">/messagerie.jsp</result>
+		</action>
+	</package>
+
+	<package name="ajax" extends="json-default ssl-default">
+		<interceptors>
+			<interceptor-stack name="secureStack">
+				<interceptor-ref name="secure">
+					<param name="useAnnotations">false</param>
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+		
+		<action name="ajax_obtenirListeComptes" class="register.action.Administration" method="doAjaxGetListeComptes">
+			<result name="success" type="json">
+				<param name="root">listeComptes</param>
+			</result>
+		</action>
+
+		<action name="ajax_obtenirListeArticles" class="register.action.ObtenirListeArticles" method="doAjaxGetListeArticles">
+			<result name="success" type="json">
+				<param name="root">listeArticles</param>
+			</result>
+		</action>
+
+		<action name="ajax_obtenirListeArticlesPourPanier" class="register.action.ObtenirListeArticles" method="doAjaxGetListeArticlesPourPanier">
+			<result name="success" type="json">
+				<param name="root">listeArticles</param>
+			</result>
+		</action>
+
+		<action name="ajax_suppressionArticle" class="register.action.SuppressionTuple" method="doAjaxSupprimerArticle">
+			<result name="success" type="json">
+			</result>
+		</action>
+
+		<action name="ajax_passerAdmin" class="register.action.Administration" method="doAjaxPasserAdmin">
+			<result name="success" type="json">
+			</result>
+		</action>
+
+		<action name="ajax_obtenirInformation" class="register.action.ObtenirCompte" method="doAjaxObtenirCompte">
+			<result name="success" type="json">
+				<param name="root">compte</param>
+			</result>
+		</action>
+
+		<action name="ajax_obtenirAnnonces" class="register.action.AdministrationAnnonces" method="doAjaxObtenirAnnonces">
+			<result name="success" type="json">
+				<param name="root">listeAnnonces</param>
+			</result>
+		</action>
+
+		<action name="ajax_validerAnnonce" class="register.action.AdministrationAnnonces" method="doAjaxValiderAnnonce">
+			<result name="success" type="json">
+			</result>
+		</action>
+
+		<action name="ajax_supprimerArticle" class="register.action.AdministrationAnnonces" method="doAjaxSupprimerArticle">
+			<result name="success" type="json">
+			</result>
+		</action>
+
+		<action name="ajax_obtenirArticle" class="register.action.ObtenirArticle" method="doAjaxObtenirArticle">
+			<result name="success" type="json">
+				<param name="root">article</param>
+			</result>
+		</action>
+
+		<action name="ajax_ajoutArticlePanier" class="register.action.AjouterArticlePanier" method="doAjaxAjoutArticlePanier">
+			<result name="success" type="json">
+				<param name="root">message</param>
+			</result>
+		</action>
+
+		<action name="ajax_obtenirUtilisateurs" class="register.action.Messagerie" method="doAjaxObtenirUtilisateurs">
+			<result name="success" type="json">
+				<param name="root">listeComptes</param>
+			</result>
+		</action>
+
+		<action name="ajax_obtenirMessages" class="register.action.Messagerie" method="doAjaxObtenirMessages">
+			<result name="success" type="json">
+				<param name="root">listeMessages</param>
+				<param name="listeDates">listeDates</param>
+			</result>
+		</action>
+
+		<action name="ajax_envoyerMessage" class="register.action.Messagerie" method="doAjaxEnvoyerMessage">
+			<result name="success" type="json">
+			</result>
+		</action>
+
+		<action name="ajax_rechercheArticleAvancee" class="register.action.Recherche" method="doAjaxRechercheArticleAvancee">
+			<result name="success" type="json">
+				<param name="root">articles</param>
+			</result>
+		</action>
+
+		<action name="ajax_articlesRecommandes" class="register.action.Recommandes" method="doAjaxRecommandes">
+			<result name="success" type="json">
+				<param name="root">recommandes</param>
+			</result>
+		</action>
+
+		<action name="ajax_supprimerPanier" class="register.action.SuppressionTuple" method="doAjaxSupprimerPanier">
+			<result name="success" type="json">
+			</result>
+		</action>
+	</package>
+</struts>
+
+
+
+
+
+		

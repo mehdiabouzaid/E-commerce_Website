@@ -1,0 +1,293 @@
+@startuml
+
+Compte : idCompte : int
+Compte : identifiant : String
+Compte : motDePasse : String
+Compte : email : String
+Compte : rôle : String
+Compte : noteMoyenne : double
+Compte : nbNotes : int
+
+Article : identifiant : int
+Article : idVendeur : int
+Article : nom : String
+Article : courteDescription : String
+Article : longueDescription : String
+Article : prix : float
+Article : etat : String
+Article : categorie : String
+Article : img : String 
+Article : lieu : String
+
+Recherche : categorie : String
+Recherche : lieu : String
+Recherche : prix : Double
+Recherche : texte : String
+
+GestionCompte : compte : compte
+
+MiseEnVente : compteBean : Article
+MiseEnVente : articleBean : Article
+MiseEnVente : BD : AccesBD
+MiseEnVente : upload : File
+MiseEnVente : uploadContentType : String
+MiseEnVente : uploadFileName : String
+MiseEnVente : sessionMap : SessionMap<String,Object> 
+
+GestionBase : ajoutArticle : PreparedStatement
+GestionBase : supprArticle : PreparedStatement
+GestionBase : listeArticles : PreparedStatement
+GestionBase : listeArticlesValide : PreparedStatement
+GestionBase : listeArticlesNonValide : PreparedStatement
+GestionBase : rechercheArticleAvancee : PreparedStatement
+GestionBase : ajoutCompte : PreparedStatement
+GestionBase : supprCompte : PreparedStatement
+GestionBase : rechercherCompteIdentifiant : PreparedStatement
+GestionBase : rechercherCompteDebutIdentifiant : PreparedStatement
+GestionBase : rechercherTousLesCompteDebutIdentifiant : PreparedStatement
+GestionBase : changerRoleCompteToAdmin : PreparedStatement
+GestionBase : changerEtatArticleToValide : PreparedStatement
+GestionBase : changerMdpCompte : PreparedStatement
+GestionBase : ajoutNote : PreparedStatement
+GestionBase : supprNote : PreparedStatement
+GestionBase : ajoutPanier : PreparedStatement
+GestionBase : supprPanier : PreparedStatement
+GestionBase : supprPanierIdArticle : PreparedStatement
+GestionBase : rechercheidArticlePanieridCompte : PreparedStatement
+GestionBase : rechercheArticleIdArticle : PreparedStatement
+GestionBase : recherchePanier : PreparedStatement
+GestionBase : ajoutMessage : PreparedStatement
+GestionBase : rechercherMessagesAvecUtilisateurs : PreparedStatement
+
+AccesBD : gestionBase : GestionBase
+
+ObtenirListeArticles : listeArticles : List<Article>
+ObtenirListeArticles : sessionMap : SessionMap<String,Object>
+
+Administration : listeComptes : List<Compte>
+Administration : debutUtilisateur : String
+Administration : utilisateurPromotion : String
+
+VerifierCompteExiste : utilisateur : String
+VerifierCompteExiste : typeCompte : String
+VerifierCompteExiste : sessionMap : SessionMap<String,Object>
+
+SuppressionTuple : idArticle : int
+
+Message : idMessage : int
+Message : expediteur : String
+Message : destinataire : String
+Message : contenu : String 
+Message : dateEnvoi : Date
+
+Messagerie : listeComptes : List<Compte> 
+Messagerie : debutUtilisateur : String
+Messagerie : utilisateur1 : String
+Messagerie : sessionMap : SessionMap<String,Object>
+Messagerie : listeMessages : List<Message>
+Messagerie : messageAEnvoyer : String
+Messagerie : utilisateurAEnvoyer : String
+
+Recommandes : recommandes : List<Article>
+
+ObtenirCompte : compte : Compte
+ObtenirCompte : sessionMap : SessionMap<String,Object>
+
+ObtenirArticle : article : Article
+ObtenirArticle : idArticle : int
+
+ModificationMdp : motDePasseOld : String
+ModificationMdp : motDePasseNew : String
+ModificationMdp : sessionMap : SessionMap<String,Object>
+
+AjouterArticlePanier : idArticle : int
+AjouterArticlePanier : message : String
+AjouterArticlePanier : sessionMap : SessionMap<String,Object>
+
+AdministrationAnnonces : listeAnnonces : List<Article>
+AdministrationAnnonces : annonceValidee : String
+
+ObtenirListeArticles --> "1" AccesBD
+Administration --> "1" AccesBD
+VerifierCompteExiste --> "1" AccesBD
+SuppressionTuple --> "1" AccesBD
+Messagerie --> "1" AccesBD
+Recommandes --> "1" AccesBD
+ObtenirCompte --> "1" AccesBD
+ObtenirArticle --> "1" AccesBD
+ModificationMdp --> "1" AccesBD
+AjouterArticlePanier --> "1" AccesBD
+AdministrationAnnonces --> "1" AccesBD
+
+
+AccesBD --> "1" GestionBase
+
+Utilisateur "1" --> "0..1" Compte 
+Utilisateur  --  StutsControleur
+Utilisateur "1" --> "1" Panier
+
+Panier "1" *-- "*" Article
+
+StutsControleur --  ConsultationCatalogue
+ConsultationCatalogue "1..*" *-- Article
+StutsControleur -- Recherche
+StutsControleur -- AjouterArticlePanier
+StutsControleur -- AdministrationAnnonces
+StutsControleur -- GestionCompte
+StutsControleur -- MiseEnVente
+StutsControleur -- CreationCompte
+StutsControleur -- Messagerie
+StutsControleur -- ObtenirListeArticles
+StutsControleur -- Administration
+StutsControleur -- VerifierCompteExiste
+StutsControleur -- SuppressionTuple
+StutsControleur -- Recommandes
+StutsControleur -- ObtenirCompte
+StutsControleur -- ObtenirArticle
+StutsControleur -- ModificationMdp
+
+
+class Messagerie{
+    String register() 
+    String doAjaxObtenirUtilisateurs()
+    String doAjaxObtenirMessages()
+    String doAjaxEnvoyerMessage()
+}
+
+class Recherche{
+    String doAjaxRechercheArticleAvancee()
+}
+
+class Panier{
+    boolean ajouterArticle(idArticle)
+    boolean supprimerArticle(idArticle)
+}
+
+class GestionCompte{
+    void editerCompte(id,mdp)
+    void redirection()
+}
+
+class MiseEnVente{
+    String execute()
+    String input()
+    void validate()
+}
+
+class CreationCompte{
+    String register()
+    String input()
+    void validate()
+}
+
+class ConsultationCatalogue{
+    Article consulterArticle(idArt)
+    void afficheArticle(idArt)
+    void afficherMessageErreur()
+}
+
+class ObtenirListeArticles{
+    String register()
+    String doAjaxGetListeArticles()
+    String doAjaxGetListeArticlesPourPanier()
+}
+
+class SuppressionTuple{
+    String doAjaxSupprimerArticle()
+}
+
+class VerifierCompteExiste{
+    void setSession(Map<String, Object> map) 
+    String execute() 
+    String input()
+    String deconnexion()
+}
+
+class ObtenirCompte{
+    String doAjaxObtenirCompte()
+}
+
+class ObtenirArticle{
+    String doAjaxObtenirArticle()
+}
+
+class ModificationMdp{
+    String execute()
+    String input()
+    String validate()
+    String deconnexion()
+}
+
+class AjouterArticlePanier{
+    String doAjaxAjoutArticlePanier()
+}
+
+class AdministrationAnnonces{
+    String register()
+    String doAjaxObtenirAnnonces()
+    String doAjaxValiderAnnonce()
+}
+
+class Administration{
+    String doAjaxGetListeComptes()
+    String doAjaxPasserAdmin()
+}
+
+class StutsControleur{
+}
+
+class GestionBase{
+    void deconnexion()
+    ResultSet rechercheidArticlePanierParidCompte(String nomDeCompte)
+    ResultSet rechercheArticleIdParArticle(int idArticle)
+    void ajouterArticle(String nomArticle, double prixArticle, String descriptionCourteArticle, String descriptionLongueArticle, String categorie, String img, String lieu)
+    ResultSet listeDArticles()
+    ResultSet rechercheArticleParPrix(int prix)
+    ResultSet rechercheArticleParCategorie(String categorie)
+    ResultSet rechercheArticleParLieu(String lieu)
+    ResultSet afficherArticle()
+    void supprimerArticle(int idArticle)
+    void ajouterCompte(String nomDeCompte, String mdpCompte, String roleCompte, String email)
+    ResultSet rechercherCompteParIdentifiant(String nomDeCompte)
+    ResultSet rechercherCompteParDebutIdentifiant(String nomDeCompte)
+    ResultSet afficherCompte()
+    void supprimerCompte(int idCompte)
+    void ajouterNote(int idVendeur, int idAcheteur, int note)
+    ResultSet afficherNote()
+    void supprimerNote(int idVendeur, int idAcheteur)
+    void ajouterPanier(int idCompte, int idArticle)
+    ResultSet afficherPanier()
+    void supprimerPanier(int idCompte, int idArticle)
+    void supprPanierIdArticle(int idArticle)
+}
+
+class AccesBD{
+    void ajouterArticle(String nomArticle, double prixArticle, String descriptionCourteArticle, String descriptionLongueArticle, String categorie, String img, String lieu)
+    void supprimerArticle(int idArticle)
+    void ajouterCompte(String nomDeCompte, String mdpCompte, String roleCompte, String email)
+    void modifierRoleToAdmin(String nomDeCompte)
+    void modifierEtatArticleToValide(String nomDeCompte)
+    void modifierMdpCompte(String mdpCompte, String nomDeCompte)
+    void ajouterNote(int idVendeur, int idAcheteur, int note)
+    void ajouterPanier(int idCompte, int idArticle)
+    void obtenirPanier(int idCompte, int idArticle)
+    void supprimerPanierIdArticle(int idArticle)
+    Article obtenirArticleParId(int idArticle)
+    void ajouterMessage(int idExpediteur, int idDestinataire, String contenu)
+    List<Article> obtenirArticles()
+    List<Article> obtenirArticlesValide()
+    List<Article> obtenirArticlesNonValide()
+    ArrayList ObtenirArticleIdParArticle(String nomDeCompte)
+    ArrayList<Integer> ObteniridArticlePanierParidCompte(String nomDeCompte)
+    Compte obtenirCompteParNom(String nomDeCompte)
+    List<Compte> obtenirTousLesComptesParNom(String nomDeCompte)
+    List<Compte> obtenirPlusieursComptesParNom(String nomDeCompte)
+    List<Message> rechercherMessagesAvecUtilisateurs(String utilisateur1, String utilisateur2)
+    Compte creerCompte(ResultSet resultat)
+    Article creerArticle(ResultSet resultat)
+    List<Article> rechercheArticleAvancee(String texte, String categorie, String lieu, Double prix)
+    Message creerMessage(ResultSet resultat)
+    void deconnexion()
+}
+
+@enduml

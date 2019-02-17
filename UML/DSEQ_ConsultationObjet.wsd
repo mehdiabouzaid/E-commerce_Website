@@ -1,0 +1,34 @@
+@startuml Consultation d'Article
+actor Utilisateur
+boundary PageConsultation
+control ServeurWeb
+database BD
+
+Utilisateur -> PageConsultation : consulter(idArt)
+activate PageConsultation
+
+PageConsultation -> ServeurWeb : idArtExiste(idArt)
+activate ServeurWeb
+
+ServeurWeb -> BD : idArtExiste(id)
+activate BD
+
+BD --> ServeurWeb : ArticleExiste()
+deactivate BD
+
+alt booleen = true
+ServeurWeb -> BD : getArticle(idArt)
+activate BD
+BD -> ServeurWeb : retourneArticle()
+deactivate BD
+ServeurWeb -> PageConsultation : retourneArticle()
+PageConsultation -> Utilisateur : afficheArticle()
+
+else booleen = false
+ServeurWeb -> PageConsultation : ArticleInexistant()
+PageConsultation -> Utilisateur : afficherMessageErreur()
+deactivate ServeurWeb
+deactivate PageConsultation
+end
+
+@enduml

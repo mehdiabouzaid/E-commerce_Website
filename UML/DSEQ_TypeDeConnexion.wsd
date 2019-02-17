@@ -1,0 +1,49 @@
+@startuml
+
+title Type de connexion
+actor Utilisateur #red
+boundary PageDeConnexion
+control ControlCompte
+entity AnnuaireCompte
+database BD
+
+Utilisateur -> PageDeConnexion: DemanderConnexion()
+activate PageDeConnexion
+activate Utilisateur
+PageDeConnexion --> Utilisateur: EnvoyerFormulaireConnexion()
+deactivate PageDeConnexion
+
+
+
+Utilisateur -> PageDeConnexion: Envoyer(id,mdp)
+activate PageDeConnexion
+PageDeConnexion -> ControlCompte: Envoyer(id,mdp)
+activate ControlCompte
+ControlCompte -> AnnuaireCompte: VérifierInformations(id,mdp)
+activate AnnuaireCompte
+AnnuaireCompte -> BD: find(id,mdp)
+activate BD
+BD --> AnnuaireCompte: estValide()
+deactivate BD
+AnnuaireCompte --> ControlCompte: estValide()
+deactivate AnnuaireCompte
+ControlCompte --> PageDeConnexion: estValide()
+deactivate ControlCompte
+
+alt estValide() = true
+    PageDeConnexion -> ControlCompte: RécupérerTypeUtilisateur(id)
+    activate ControlCompte
+    ControlCompte -> AnnuaireCompte: RécupérerTypeUtilisateur(id)
+    activate AnnuaireCompte
+    AnnuaireCompte --> ControlCompte: typeUtilisateur()
+    deactivate AnnuaireCompte
+    ControlCompte --> PageDeConnexion: typeUtilisateur()
+    deactivate ControlCompte
+    PageDeConnexion --> Utilisateur: AfficherInterfaceUtilisateur(type)
+else estValide() = false
+    PageDeConnexion --> Utilisateur: EnvoyerMessageErreur()
+end
+deactivate PageDeConnexion
+deactivate Utilisateur
+
+@enduml

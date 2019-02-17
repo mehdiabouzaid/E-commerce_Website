@@ -1,0 +1,17 @@
+Compilation : ant
+	      cp dist/Kristazax.war /tmp/wildfly-15.0.0.Final/standalone/deployments/
+
+Installation postgresql :
+    sudo apt install postgresql
+    sudo service postgresql restart
+    sudo -i -u postgres
+    cd 'chemin jusqu'à Kristazax/bd_init'
+    psql
+    \i creation_bd_et_utilisateur.sql
+    ctrl+D (déconnection)
+
+Pour se connecter en tant que banane :
+psql -h localhost -U banane kristazax (mdp = jaune)
+\i creationTable.sql
+\i creationTrigger.sql
+\i remplirTable.sql

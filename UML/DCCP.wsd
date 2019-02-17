@@ -1,0 +1,62 @@
+@startuml
+
+Compte : identifiant : string
+Compte : mot de passe : string
+Compte : rôle : string
+Compte : estIdentifie : booleen
+
+
+Article : identifiant : integer
+Article : nom : string
+Article : description : string
+Article : prix : float
+
+Recherche : type : string
+Recherche : lieu : string
+Recherche : prix : float
+
+GestionCompte : compte : compte
+
+MiseEnVente : article : article
+MiseEnVente : compte : compte
+
+Utilisateur "1" --> "0..1" Compte 
+Utilisateur  --  Affichage
+Utilisateur "1" --> "1" Panier
+
+Panier "1" *-- "*" Article
+
+Affichage --  ConsultationCatalogue
+ConsultationCatalogue "1..*" *-- Article
+Affichage -- Recherche
+Affichage -- GestionCompte
+Affichage -- MiseEnVente
+Affichage -- CreationCompte
+Affichage -- Messagerie
+
+class Messagerie{
+
+}
+
+class Recherche{
+    
+}
+
+class GestionCompte{
+    
+}
+
+class MiseEnVente{
+    
+}
+
+class CreationCompte{
+    
+}
+
+class ConsultationCatalogue{
+
+}
+RechercheAvancee -up-|> Recherche
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+actor Utilisateur
+boundary PageGestionCompte
+control ServeurWeb
+database BD
+
+Utilisateur -> PageGestionCompte : editerCompte(id,mdp)
+activate PageGestionCompte
+
+PageGestionCompte -> ServeurWeb : editionValide(id,mdp)
+activate ServeurWeb
+
+alt editionPossible = false
+    ServeurWeb -> PageGestionCompte : editionEchouee()
+else edition possible = true
+    ServeurWeb -> BD : editionCompte(id,mdp)
+    activate BD
+    deactivate BD
+    ServeurWeb -> PageGestionCompte : editionValide()  
+end
+
+    deactivate ServeurWeb
+    PageGestionCompte -> Utilisateur : redirection()
+    deactivate PageGestionCompte
+
+@enduml
